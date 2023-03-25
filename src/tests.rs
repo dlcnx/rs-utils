@@ -1,17 +1,5 @@
-use crate::LifoQueue;
 use crate::ThreadPool;
-
-#[test]
-fn lifo_queue() {
-    let mut q = LifoQueue::new();
-    q.push(1);
-    q.push(2);
-    assert_eq!(false, q.empty());
-    assert_eq!(2, q.len());
-    assert_eq!(2, q.pop().unwrap());
-    assert_eq!(1, q.pop().unwrap());
-    assert_eq!(true, q.empty());
-}
+use crate::Subprocess;
 
 #[test]
 fn thread_pool() {
@@ -21,4 +9,12 @@ fn thread_pool() {
     pool.execute(|| println!("3"));
     pool.execute(|| println!("4"));
     pool.execute(|| println!("5"));
+}
+
+#[test]
+fn subprocess() {
+    let mut p = Subprocess::new("cmd", None);
+    p.write_line("echo 123".to_string());
+    p.read_line();
+    p.wait().unwrap();
 }

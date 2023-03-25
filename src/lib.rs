@@ -1,9 +1,9 @@
-mod lifo_queue;
 mod thread_pool;
+mod subprocess;
 
 // pub use
-pub use lifo_queue::LifoQueue;
 pub use thread_pool::ThreadPool;
+pub use subprocess::Subprocess;
 
 #[cfg(test)]
 mod tests;
