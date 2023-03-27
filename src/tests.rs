@@ -13,7 +13,15 @@ fn thread_pool() {
 
 #[test]
 fn subprocess() {
-    let mut p = Subprocess::new("cmd", None);
+    let program: &str;
+    if cfg!(windows) {
+        program = "cmd";
+    } else if cfg!(unix) {
+        program = "bash";
+    } else {
+        program = "";
+    }
+    let mut p = Subprocess::new(program, None);
     p.write_line("echo 123");
     p.write_line("exit");
     loop {
