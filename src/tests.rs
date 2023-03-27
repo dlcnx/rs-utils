@@ -1,5 +1,5 @@
-use crate::ThreadPool;
 use crate::Subprocess;
+use crate::ThreadPool;
 
 #[test]
 fn thread_pool() {
@@ -14,7 +14,33 @@ fn thread_pool() {
 #[test]
 fn subprocess() {
     let mut p = Subprocess::new("cmd", None);
-    p.write_line("echo 123".to_string());
-    p.read_line();
+    p.write_line("echo 123");
+    p.write_line("exit");
+    loop {
+        let next_line = p.read_line();
+        if next_line.is_empty() {
+            break;
+        }
+        // print!("{}", next_line);
+    }
+    p.wait().unwrap();
+}
+
+#[ignore]
+#[test]
+fn test_bds() {
+    let mut p = Subprocess::new(
+        "bedrock_server_mod",
+        Some("D:\\ABCDEFG\\Objects\\bds\\bedrock-server-1.19.72.01".to_string()),
+    );
+    p.write_line("list");
+    p.write_line("stop");
+    loop {
+        let next_line = p.read_line();
+        if next_line.is_empty() {
+            break;
+        }
+        print!("{}", next_line);
+    }
     p.wait().unwrap();
 }
