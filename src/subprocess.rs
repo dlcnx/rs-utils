@@ -4,8 +4,7 @@
 use std::io::{self, BufRead, BufReader, Write};
 use std::process::{Child, ChildStdin, ChildStdout, Command, ExitStatus, Stdio};
 
-use encoding::all::GBK;
-use encoding::{DecoderTrap, Encoding};
+use crate::EncodeTool;
 
 pub struct Subprocess {
     child: Child,
@@ -48,7 +47,7 @@ impl Subprocess {
         if let Ok(line) = String::from_utf8(line.clone()) {
             return format!("{}", line);
         }
-        format!("{}", GBK.decode(&line, DecoderTrap::Strict).unwrap())
+        format!("{}", EncodeTool::gbk_to_utf8(&line))
     }
 
     /// 等待程序终止并返回退出码
